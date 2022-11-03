@@ -32,6 +32,9 @@ const Login = () =>{
             };
             let temp = response.data
             navigate('/user',{state:{'name':temp}});
+        }).catch((err)=>{
+            console.log(err)
+            alert("server error")
         })
     } 
 

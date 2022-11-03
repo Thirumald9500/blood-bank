@@ -7,30 +7,27 @@ import { useNavigate,useLocation } from "react-router-dom";
 
 const User = () =>{
     const navigate = useNavigate();
-    const {state} = useLocation();
-    let name='praveen';
-    const [data,setdata]=useState({
-        b_group:"",
-        location:"",
-    });
+    // const {state} = useLocation();
+    // let name=state.name;
+    // const [data,setdata]=useState({
+    //     b_group:"",
+    //     location:"",
+    // });
 
-    const handle = (e) => {
-        const newdata={...data}
-        newdata[e.target.id]=e.target.value
-        setdata(newdata)
-        console.log(data);
-    } ;
+    // const handle = (e) => {
+    //     const newdata={...data}
+    //     newdata[e.target.id]=e.target.value
+    //     setdata(newdata)
+    //     console.log(data);
+    // } ;
 
-    const deleteacc = (username) =>{
-        console.log(username);
-        axios.delete('http://localhost:7000/delete/'+username)
-    }
+
 
     return(
         <div className="container">
             <MdBloodtype className="logo" />
             <div className="heading">
-                <h4>welcome </h4> {/*name will username return from the server*/}
+                <h4>Welcome to your BloodBank</h4> {/*name will username return from the server*/}
             </div>
             <div className="box">
                 <form>
@@ -44,7 +41,7 @@ const User = () =>{
                         <button type="button" className="log-btn2" onClick={(e) =>  navigate("/update") } > Update Blood</button>
                     </div>
                     <div className="form-group2">
-                        <button type="button" className="log-btn2" onClick={() => deleteacc(name)} > Delete Account</button>
+                        <button type="button" className="log-btn2" onClick={() => navigate("/delete")} > Delete Account</button>
                     </div>
                     <div className="form-group2">
                         <button type="button" className="log-btn2 logout" onClick={() =>  navigate("/") } > Log out</button>

@@ -50,7 +50,7 @@ router.post("/login",(req,res)=>{
     let password2;
     db.query("select password from login where username = ?",[name],(err,result)=>{
         if(err){
-            console.log(err,"error")
+            return res.send({'status':'failure','msg':err.sqlMessage})
         }
         console.log(result,'login result');
         if(result.length == 0 ){
@@ -85,10 +85,9 @@ router.post("/Donate",(req,res) => {
     console.log(m_num)
     const b_group = data.b_group;
     const location = data.location;
-    const u_name= data.u_name;
-    console.log(u_name);   
-    const query="insert into bloodbank(username,name,mobilenumber,bloodgroup,location)values(?,?,?,?,?)"
-    db.query(query,[u_name,name,m_num,b_group,location],(err,result)=>{
+ 
+    const query="insert into bloodbank(name,mobilenumber,bloodgroup,location)values(?,?,?,?)"
+    db.query(query,[name,m_num,b_group,location],(err,result)=>{
         if (err) {
             console.log(err)
             return res.send({'status':'failure','msg':err.sqlMessage})
@@ -118,32 +117,40 @@ router.post("/Request",(req,res) =>{
     })
 })
 // update
-router.put("/update",(req,res) =>{
-    const data=req.body;
-    const u_name=data.u_name;
-    const name=data.name;
-    const m_num=data.m_num;
-    const b_group=data.b_group;
-    const location=data.location;
-    // ,name,mobilenumber,bloodgroup,location
-    const query="update bloodbank set name = ?,mobilenumber = ?,bloodgroup = ?,location=?  where username = ?"
-    db.query(query,[name,m_num,b_group,location,u_name],(err,result) =>{
+router.post("/update",(req,res) =>{
+    const data =req.body;
+    console.log(req)
+    if(data.name == ''){
+        return res.send({'status':'failure','msg':'send data'})
+    }
+    console.log(data,'in form')
+   // return res.send('check')
+    const name = data.name;
+    const m_num= data.m_num;
+    console.log(m_num)
+    const b_group = data.b_group;
+    const location = data.location;
+    const query="update bloodbank set mobilenumber = ?,bloodgroup = ?,location=?  where name = ?"
+    db.query(query,[m_num,b_group,location,name],(err,result) =>{
         if (err) {
-            res.send(err);
+            console.log(err);
+            return res.send(err);
         }
         else{
-            res.send(res);
+            res.send(result);
         }
-    })
-})
+     })
+ })
 
-// delete 
-router.delete("/delete/:name",(req,res) =>{
-    const name = req.params.name;
-    const query = "delete from bloodbank where username = ? "
-    db.query(query,name,(err,result)=>{
+//delete 
+router.delete("/delete/:number",(req,res) =>{
+    const data=req.params;
+    const m_num = data.number;
+    console.log(m_num,'deteding')
+    const query = "delete from bloodbank where mobilenumber = ?"
+    db.query(query,[m_num],(err,result)=>{
         if (err){
-            res.send(err)
+            return res.send({'status':'failure','msg':err.sqlMessage})
         }
         else{
             res.send("deleted");

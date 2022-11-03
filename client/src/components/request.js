@@ -22,6 +22,12 @@ const Request = () =>{
     } 
     
     const submit = (e) =>{
+        e.preventDefault();
+        for (const key in data) {
+            if(data[key] === ""){
+                return alert(key+" is empty")
+            }
+        }
         Requestblood({
             Bloodgroup :data.b_group,
             location :data.location,

@@ -23,10 +23,16 @@ const Donate_data = (data) => {
     return axios.post(url+suburl,data) 
 }
 
-const Update = (data) => {
+const Update_blooddata = (data) => {
     console.log(data)
     let suburl = 'update'
     return axios.post(url+suburl,data) 
 }
 
-export {Loginpost,Requestblood,RegisterUser,Donate_data,Update}
+const Delete_blood = (data) => {
+    console.log(data,'in service')
+    let suburl = 'delete/'
+    return axios.delete(url+suburl+data)
+}
+
+export {Loginpost,Requestblood,RegisterUser,Donate_data,Update_blooddata,Delete_blood}

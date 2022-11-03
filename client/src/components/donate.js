@@ -26,7 +26,13 @@ const Donate = () =>{
         console.log(data);
     } 
 
-    const submit = (e) =>{
+    const submit1 = (e) =>{
+        e.preventDefault();
+        for (const key in data) {
+            if(data[key] === ""){
+                return alert(key+" is empty")
+            }
+        }
             Donate_data({
                 name:data.name,
                 m_num: data.m_number,
@@ -40,6 +46,8 @@ const Donate = () =>{
                     return
                 }
                 navigate('/user')
+            }).catch((err)=>{
+                alert("Server error")
             })
             }
           
@@ -76,7 +84,7 @@ const Donate = () =>{
                     onChange={(e) => handle(e)} value={data.location} />
                     </div>
                     <div className="form-group2">
-                        <button type="submit" onClick={submit} className="log-btn ">Donate </button>
+                        <button type="submit" onClick={submit1} className="log-btn ">Donate </button>
                     </div>
                     <div className="form-group2">
                         <button type="button" className="log-btn2" onClick={() =>  navigate("/user") } > Back </button>
