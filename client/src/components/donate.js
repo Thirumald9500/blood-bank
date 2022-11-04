@@ -8,6 +8,8 @@ import { AiOutlineUser } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import "./donate.css"
 import { Donate_data } from "../services/apiservice";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Donate = () =>{
     const u_name="sundar";
@@ -42,12 +44,12 @@ const Donate = () =>{
                 }).then((res)=>{
                 console.log(res.data['status']);
                 if(res.data['status']=== 'failure'){
-                    alert(res.data['msg'])
+                    toast.error(res.data['msg'])
                     return
                 }
                 navigate('/user')
             }).catch((err)=>{
-                alert("Server error")
+                toast.error("server error")
             })
             }
           
@@ -70,13 +72,21 @@ const Donate = () =>{
                     </div>
                     <div className="form-group log-status">
                     <TfiMobile className="mailicon"/>
-                    <input type="number" className="form-control" placeholder="Mobile number" id="m_number"
+                    <input type="text" className="form-control" placeholder="Mobile number" id="m_number"
                     onChange={(e) => handle(e)} value={data.m_number} />
                     </div>
                     <div className="form-group log-status">
                     <GiWaterDrop className="mailicon"/>
-                    <input type="text" className="form-control" placeholder="Blood group" id="b_group"
-                    onChange={(e) => handle(e)} value={data.b_group} />
+                    {/* <input type="text" className="form-control" placeholder="Blood group" id="b_group"
+                    onChange={(e) => handle(e)} value={data.b_group} /> */}
+                    <select id="b_group" className="form-control" value={data.b_group} onChange={(e)=> handle(e)}>
+                        <option value=''>Select</option>
+                        <option value='A+'>A+</option>
+                        <option value='O+'>O+</option>
+                        <option value='O-'>O-</option>
+                        <option value='A-'>A-</option>
+                        <option value='B+'>B+</option>
+                    </select>
                     </div>
                     <div className="form-group log-status">
                     <ImLocation className="mailicon"/>
@@ -91,7 +101,8 @@ const Donate = () =>{
                     </div>
                 </form>
             </div>
-        </div>
+            </div>
+        <ToastContainer/>
         </div> 
     )
 

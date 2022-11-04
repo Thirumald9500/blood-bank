@@ -6,6 +6,8 @@ import { Si1Password } from "react-icons/si";
 import { MdBloodtype } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Loginpost } from "../services/apiservice";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () =>{
     const navigate = useNavigate();
@@ -27,18 +29,18 @@ const Login = () =>{
         }).then((response) =>{
             console.log(response.data)
             if (response.data['status'] === "failure") {
-                alert(response.data['msg'])
-                return navigate('/')
+                toast.error(response.data['msg']);
+                return
             };
             let temp = response.data
             navigate('/user',{state:{'name':temp}});
         }).catch((err)=>{
-            console.log(err)
-            alert("server error")
+            toast.error("Server Error, Contact Admin");
         })
     } 
 
     return(
+        <>
         <div className="container">
             <MdBloodtype className="logo" />
             <div className="heading">
@@ -65,7 +67,11 @@ const Login = () =>{
                     </div>
                 </form>
             </div>
+            
         </div>
+        <ToastContainer />
+        </>
+        
     )
 }
 

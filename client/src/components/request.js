@@ -6,6 +6,8 @@ import { ImLocation } from "react-icons/im";
 import { MdBloodtype } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Requestblood } from "../services/apiservice";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Request = () =>{
     const navigate = useNavigate();
@@ -25,7 +27,8 @@ const Request = () =>{
         e.preventDefault();
         for (const key in data) {
             if(data[key] === ""){
-                return alert(key+" is empty")
+                toast.error(key+" is empty")
+                return
             }
         }
         Requestblood({
@@ -34,8 +37,8 @@ const Request = () =>{
           }).then((response)=>{
             console.log(response.data,"b")
             const table_data = response.data;
-            if(response.data === []){
-                alert('sry, no such blood group available')
+            if(response.data.length === 0){
+                toast.error('sry, no such blood group available')
                 return
             }
             navigate("/table",{state:{'table_data':table_data}})
@@ -44,40 +47,43 @@ const Request = () =>{
     } 
 
     return(
-        <div className="container">
-            <MdBloodtype className="logo" />
-            <div className="heading">
-                <h4>BloodBank Request Form</h4>
-                <h6>Enter Blood group and your Location</h6>
+        <div>
+            <div className="container">
+                <MdBloodtype className="logo" />
+                <div className="heading">
+                    <h4>BloodBank Request Form</h4>
+                    <h6>Enter Blood group and your Location</h6>
+                </div>
+                <div className="box">
+                    <form >
+                        <div className="form-group ">
+                        <GiWaterDrop className="mailicon"/>
+                        <select id="b_group" className="form-control" value={data.b_group} onChange={(e)=> handle(e)}>
+                            <option value=''>Select</option>
+                            <option value='A+'>A+</option>
+                            <option value='O+'>O+</option>
+                            <option value='O-'>O-</option>
+                            <option value='A-'>A-</option>
+                            <option value='B+'>B+</option>
+                        </select>
+                        {/* <input type="text" value={data.b_group} onChange={(e)=> handle(e)}
+                        className="form-control" placeholder="Blood Group" id="b_group"/> */}
+                        </div>
+                        <div className="form-group log-status">
+                        <ImLocation className="mailicon"/>
+                        <input type="text" className="form-control" placeholder="location" id="location"
+                        onChange={(e) => handle(e)} value={data.location} />
+                        </div>
+                        <div className="form-group2">
+                            <button type="button" className="log-btn " onClick={submit}> Request</button>
+                        </div>
+                        <div className="form-group2">
+                            <button type="button" className="log-btn2" onClick={() =>  navigate(-1) } > Back</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div className="box">
-                <form >
-                    <div className="form-group ">
-                    <GiWaterDrop className="mailicon"/>
-                    <select id="b_group" className="form-control" value={data.b_group} onChange={(e)=> handle(e)}>
-                        <option value=''>Select</option>
-                        <option value='A+'>A+</option>
-                        <option value='O+'>O+</option>
-                        <option value='O-'>O-</option>
-                        <option value='A-'>A-</option>
-                        <option value='B+'>B+</option>
-                    </select>
-                    {/* <input type="text" value={data.b_group} onChange={(e)=> handle(e)}
-                    className="form-control" placeholder="Blood Group" id="b_group"/> */}
-                    </div>
-                    <div className="form-group log-status">
-                    <ImLocation className="mailicon"/>
-                    <input type="text" className="form-control" placeholder="location" id="location"
-                    onChange={(e) => handle(e)} value={data.location} />
-                    </div>
-                    <div className="form-group2">
-                        <button type="button" className="log-btn " onClick={submit}> Request</button>
-                    </div>
-                    <div className="form-group2">
-                        <button type="button" className="log-btn2" onClick={() =>  navigate(-1) } > Back</button>
-                    </div>
-                </form>
-            </div>
+            <ToastContainer/>
         </div>
     )
 }
