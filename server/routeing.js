@@ -10,9 +10,18 @@ const mysql = require("mysql2");
 // database
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '9500770814',
-    database: 'bloodbank'
+    port:'',
+    user: '',
+    password: '',
+    database: ''
+});
+
+db.connect(function(err) {
+    if (err) {
+        console.log(err);
+        return;
+    };
+    console.log("Connected!");
 });
 
 router.use(cors())
@@ -44,14 +53,16 @@ router.post("/login",(req,res)=>{
     const name = data.name;
     const password=data.password;
     if(name== '' || password == ''){
-        return res.send({'status':'failure','msg':"user name and password needed"})
+        return res.send({'status':'failure','msg':"Kindly Fill All Details"})
     }
     console.log(name,password,'hit')
     let password2;
     db.query("select password from login where username = ?",[name],(err,result)=>{
         if(err){
+            console.log(err);
             return res.send({'status':'failure','msg':err.sqlMessage})
         }
+        console.log(result);
         console.log(result,'login result');
         if(result.length == 0 ){
             console.log('hit');
@@ -63,7 +74,7 @@ router.post("/login",(req,res)=>{
             res.send(name)
         }
         else{
-            res.send({'status':'failure','msg':"incorrect passord"})
+            res.send({'status':'failure','msg':"Please Enter Valid Password"})
         }
       
     })
